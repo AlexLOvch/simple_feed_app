@@ -1,0 +1,9 @@
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 25
+
+Style/MixinUsage:
+  Exclude:
+    - "bin/**/*"

@@ -1,0 +1,24 @@
+<h1>Apartments</h1>
+<table class='apartments'>
+  <thead>
+    <tr>
+      <th>Address</th>
+      <th>Apartment</th>
+      <th>City</th>
+      <th>Price</th>
+      <th>Agency</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% apartments.each do |apartment| %>
+      <tr>
+        <td><%= apartment.address %></td>
+        <td><%= apartment.apartment %></td>
+        <td><%= apartment.city %></td>
+        <td><%= apartment.price %></td>
+        <td><%= apartment.rental_agency %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
