@@ -1,0 +1,15 @@
+development: &default
+  adapter: postgresql
+  database: simple_feed_app_development
+  pool: 5
+  timeout: 5000
+  username: <%= Rails.application.credentials.dig(:postgres_username) %>
+  password:  <%= Rails.application.credentials.dig(:postgres_password) %>
+
+test:
+  <<: *default
+  database: simple_feed_app_test
+
+production:
+  <<: *default
+  database: simple_feed_app_production

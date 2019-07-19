@@ -1,40 +1,51 @@
 # frozen_string_literal: true
 
-require 'ostruct'
-
-class Apartment
-  include ActiveModel::Validations
+class Apartment < ApplicationRecord
   include Loadable
-  include Validable
+  loadable from: 'https://raw.githubusercontent.com/kirillplatonov/apartments-feed-test/master/apartments.yml',
+    validate_data: true
 
-  loadable from: 'https://raw.githubusercontent.com/kirillplatonov/apartments-feed-test/master/apartments.yml'
+  attr_accessor :rental_agency, :price
 
-  attr_accessor :address, :apartment, :city, :price, :rental_agency, :priority
-  validates :address, :apartment, :city, :price, :rental_agency, presence: true
-  validates :rental_agency, inclusion: { in: Agency.agency_names, message: 'Unknown agency' }
+  has_many :agency_apartments, dependent: :destroy
+  has_many :agencies, through: :agency_apartments
 
-  def initialize(attr_hash)
-    attr_hash.each { |k, v| public_send("#{k}=", v) }
-  end
+  validates :address, :apartment, :city, presence: true
 
-  def addr_str
-    "#{city}#{address}#{apartment}"
-  end
+  after_save :create_or_update_agency_apartment
 
-  class << self
-    def with_agencies_priorities
-      apartments = Apartment.valid_data
-      apartments.each do |apartment|
-        agency = Agency.find_by_name(apartment.rental_agency)
-        apartment.priority = agency.priority
-      end
-      apartments
-    end
 
-    def filtered_data
-      grouped = with_agencies_priorities.group_by(&:addr_str)
-      sorted_groups = grouped.map { |_name, arr| arr.sort_by { |ap| Agency.max_priority - ap.priority } }
-      sorted_groups.map(&:first)
+  def self.with_topmost_agency
+    includes(:agency_apartments => :agency).map do |apartment|
+      topmost_agency_apartment = apartment.agency_apartments.max{|a, b| a.agency.priority <=> b.agency.priority}
+      apartment.rental_agency = topmost_agency_apartment.agency.agency_name
+      apartment.price = topmost_agency_apartment.price
+      apartment
     end
   end
+
+  def parsed_price
+    price[1..-1].to_f
+  end
+
+  def save
+    if new_record? && existent_apartment = Apartment.find_by(address: address, apartment: apartment, city: city)
+      existent_apartment.rental_agency = rental_agency
+      existent_apartment.price = price
+      existent_apartment.create_or_update_agency_apartment
+      true
+    else
+      super
+    end
+  end
+
+  protected
+
+  def create_or_update_agency_apartment
+    agency = Agency.find_by(agency_name: rental_agency)
+    agency_apartment = AgencyApartment.find_or_initialize_by(agency_id: agency.id, apartment_id: self.id)
+    agency_apartment.price = parsed_price
+    agency_apartment.save
+  end
+
 end

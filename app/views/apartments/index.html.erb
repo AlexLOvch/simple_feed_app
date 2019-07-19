@@ -16,7 +16,7 @@
         <td><%= apartment.address %></td>
         <td><%= apartment.apartment %></td>
         <td><%= apartment.city %></td>
-        <td><%= apartment.price %></td>
+        <td><%= number_to_currency(apartment.price, precision: 0) %></td>
         <td><%= apartment.rental_agency %></td>
       </tr>
     <% end %>

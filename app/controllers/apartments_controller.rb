@@ -4,7 +4,7 @@ require 'open-uri'
 
 class ApartmentsController < ApplicationController
   def index
-    render 'index', locals: { apartments: Apartment.filtered_data }
+    render 'index', locals: { apartments: Apartment.with_topmost_agency }
   rescue Exceptions::DataLoadError
     render 'loading_data_error'
   end
