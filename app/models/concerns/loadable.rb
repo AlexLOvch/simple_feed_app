@@ -58,10 +58,11 @@ module Loadable
       @loaded_data = validate_data(preprocess_data(Parser.parse(Loader.load(loading_options[:from]))))
     rescue StandardError => e
       Rails.logger.error("Loading data error: #{name} - #{e.message}")
-      raise Exceptions::DataLoadError
+      @loaded_data = []
     end
 
     def load!
+      load_data
       if loaded_data.any?
         destroy_all
         loaded_data.each(&:save)
