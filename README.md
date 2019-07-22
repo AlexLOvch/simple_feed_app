@@ -35,6 +35,9 @@ It's applicable in case:
   > To get all Apartments with most prioritised agency class method [with_topmost_agency](https://github.com/AlexLOvch/simple_feed_app/blob/master/app/models/apartment.rb#L17) is used. To prevent n+1 DB request it uses `includes(agency_apartments: :agency)` on Apartment model.
   >
   > [rake db:seed](https://github.com/AlexLOvch/simple_feed_app/blob/master/db/seeds.rb) will check both Agency and Apartment data present after download and only in this case will call `load!` on them. It has user friendy messages to letting user know about data loading.
+>
+>
+> Rspec tests added [here](https://github.com/AlexLOvch/simple_feed_app/tree/master/spec)(models, concerns, controller and request are covered). Coverage is 95.88%. 
 
 #### Possible improvements: 
 * Extract Address and City from Apartment into separate models.
