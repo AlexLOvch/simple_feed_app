@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddApartments < ActiveRecord::Migration[5.2]
   def change
     create_table :apartments do |t|
@@ -6,6 +8,6 @@ class AddApartments < ActiveRecord::Migration[5.2]
       t.string :city, null: false
     end
 
-    add_index :apartments, [:address, :apartment, :city], unique: true
+    add_index :apartments, %i[address apartment city], unique: true
   end
 end

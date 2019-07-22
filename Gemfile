@@ -11,16 +11,16 @@ gem 'rails', '~> 5.2.3'
 gem 'puma', '~> 3.11'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
-gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'pg'
+gem 'sprockets-rails', require: 'sprockets/railtie'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'rubocop', '~> 0.73.0', require: false
-  gem 'rspec-rails', '~> 3.8'
   gem 'factory_bot_rails'
   gem 'ffaker'
+  gem 'rspec-rails', '~> 3.8'
+  gem 'rubocop', '~> 0.73.0', require: false
 end
 
 group :development do

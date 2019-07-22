@@ -11,14 +11,15 @@ module Loadable
     def loading_options
       @loading_options
     end
+
     # allows to convert data to attributes hash
     # input {"cooper_and_cooper"=>10, "loftey"=>9, "triplemint"=>8}
     # output [{"agency_name" => "cooper_and_cooper", "proirity"=>10, ...}
     def preprocess_data(data)
       if loading_options[:convert_to_attr_hash]
-        data.map do |k,v|
+        data.map do |k, v|
           keys = column_names - ['id']
-          keys.zip([k,v]).to_h
+          keys.zip([k, v]).to_h
         end
       else
         data

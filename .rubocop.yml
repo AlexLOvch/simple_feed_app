@@ -1,9 +1,25 @@
 Metrics/LineLength:
   Max: 120
+  Exclude:
+    - 'spec/models/concerns/loadable_spec.rb'
 
 Metrics/MethodLength:
   Max: 25
 
+Metrics/BlockLength:
+ Exclude:
+  - 'app/models/concerns/loadable.rb'
+  - '**/*_spec.rb'
+
 Style/MixinUsage:
   Exclude:
-    - "bin/**/*"
+    - 'bin/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+AllCops:
+  UseCache: false
+  DefaultFormatter: progress
+  DisplayStyleGuide: true
+  TargetRubyVersion: 2.6

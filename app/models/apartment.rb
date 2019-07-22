@@ -3,7 +3,7 @@
 class Apartment < ApplicationRecord
   include Loadable
   loadable from: 'https://raw.githubusercontent.com/kirillplatonov/apartments-feed-test/master/apartments.yml',
-    validate_data: true
+           validate_data: true
 
   attr_accessor :rental_agency, :price
 
@@ -14,10 +14,9 @@ class Apartment < ApplicationRecord
 
   after_save :create_or_update_agency_apartment
 
-
   def self.with_topmost_agency
-    includes(:agency_apartments => :agency).map do |apartment|
-      topmost_agency_apartment = apartment.agency_apartments.max{|a, b| a.agency.priority <=> b.agency.priority}
+    includes(agency_apartments: :agency).map do |apartment|
+      topmost_agency_apartment = apartment.agency_apartments.max { |a, b| a.agency.priority <=> b.agency.priority }
       apartment.rental_agency = topmost_agency_apartment.agency.agency_name
       apartment.price = topmost_agency_apartment.price
       apartment
@@ -43,9 +42,8 @@ class Apartment < ApplicationRecord
 
   def create_or_update_agency_apartment
     agency = Agency.find_by(agency_name: rental_agency)
-    agency_apartment = AgencyApartment.find_or_initialize_by(agency_id: agency.id, apartment_id: self.id)
+    agency_apartment = AgencyApartment.find_or_initialize_by(agency_id: agency.id, apartment_id: id)
     agency_apartment.price = parsed_price
     agency_apartment.save
   end
-
 end
