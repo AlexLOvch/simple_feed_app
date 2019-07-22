@@ -18,7 +18,7 @@ It's applicable in case:
 ## Database version
 [Branch db_solution amd master branch](https://github.com/AlexLOvch/simple_feed_app/) contain final version of [testtask]( https://github.com/kirillplatonov/apartments-feed-test). This version uses DB to store data localy. To populate data `rake db:seed` task can be used.
 #### Assumptions:
-* Source data amount is not big(b/c of we still have in memory processing there - downloading and parsing of yaml file). Otherwise the best solution is download source file and process it manually line by line(or rather record by record) to prevent memory overflow. Also pagination id not used while data output just because this assumption.
+* Source data amount is not big(b/c of we still have in memory processing there - downloading and parsing of yaml file). Otherwise the best solution is download source file and process it 'manually' line by line(or rather record by record) to prevent memory overflow. Also pagination is not used while data output there just because of this assumption.
 * All prices has same currency and format(we suppose `$` and number after it).
 
 #### Short description of database version
